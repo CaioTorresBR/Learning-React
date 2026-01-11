@@ -8,6 +8,10 @@ function Counter() {
   /* useState hook to increment and decrement the number */
   const [number, updateNumber] = useState(0);
 
+  const [inputValue, setInputValue] = useState(0);
+
+  const sum = number + parseInt(inputValue);
+
   return (
     <>
       <button
@@ -17,6 +21,7 @@ function Counter() {
         >+
       </button>
 
+      {/* Displays the current number */}
       <h1>{number}</h1>
 
       <button
@@ -25,11 +30,25 @@ function Counter() {
         onClick={() => updateNumber(number - 1)}
         >-
       </button>
+
+      <br></br>
+
+      <legend>Write a number here:</legend>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        />
+
+      
+      <h2>The sum between both numbers is: {sum}</h2>
     </>
   )
 
 
 }
+
+
 
 export default function CounterApp() {
   return (
