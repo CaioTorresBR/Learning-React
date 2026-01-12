@@ -47,16 +47,37 @@ function Counter() {
   );
 }
 
+/* Creating a random number for the data retrieval */
+const min = 1;
+const max = 100;
+const rand = min + Math.random() * (max - min);
+let currentQuote = 0 ;
+
+
 function PhilosophyQuotes() {
-  const [quote, setQuote] = useState("")
+  const [quote, setQuote] = useState("");
+  const [philospher, setPhilosopher] = useState("");
+  const [year, setYear] = useState("");
 
   const fetchQuote = () => {
+
     /*fetches quotes from philospher api */
     Axios.get("https://philosophersapi.com/api/quotes").then((res) => {
-      console.log(res.data.quote);
-      setQuote(res.data.quote);
+      console.log(res.data[currentQuote].quote);
+      console.log(res.data[currentQuote].philosopher.name);
+      console.log(res.data[currentQuote].year);
+
+
+      setQuote(res.data[currentQuote].quote);
+      setPhilosopher(res.data[currentQuote].philospher);
+      setYear(res.data[currentQuote].year);
+
     });
+
+    currentQuote += 1;
+
   }
+
   /* using useEffect so the function is not called for every rendering */
   useEffect(() => {  
     fetchQuote();
@@ -66,8 +87,8 @@ function PhilosophyQuotes() {
     <>
     <button 
       type="button"
-      onClick={fetchQuote}
-      >Need more wisdom?
+      onClick={() => fetchQuote()}
+      >Click here if you need wisdom
     </button>
     <p> {quote} </p>
     </>
@@ -75,9 +96,8 @@ function PhilosophyQuotes() {
 }
 
 
-export default function CounterApp() {
 
-
+export default function App() {
   return (
     <div>
       <h1>Welcome to my counter app</h1>
