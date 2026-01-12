@@ -1,7 +1,8 @@
-import { createRoot } from 'react-dom/client'
-import {useState} from 'react'
-import './index.css'
-
+import { createRoot } from 'react-dom/client';
+import {useState, useEffect} from 'react';
+import './index.css';
+import "./App.css";
+import Axios from "axios";
 
 
 function Counter() {
@@ -10,6 +11,7 @@ function Counter() {
 
   const [inputValue, setInputValue] = useState(0);
 
+  /* Adds number selected with the buttons and number input */
   const sum = number + parseInt(inputValue);
 
   return (
@@ -40,21 +42,47 @@ function Counter() {
         onChange={(e) => setInputValue(e.target.value)}
         />
 
-      
       <h2>The sum between both numbers is: {sum}</h2>
     </>
+  );
+}
+
+function PhilosophyQuotes() {
+  const [quote, setQuote] = useState("")
+
+  const fetchQuote = () => {
+    /*fetches quotes from philospher api */
+    Axios.get("https://philosophersapi.com/api/quotes").then((res) => {
+      console.log(res.data.quote);
+      setQuote(res.data.quote);
+    });
+  }
+  /* using useEffect so the function is not called for every rendering */
+  useEffect(() => {  
+    fetchQuote();
+  }, []);
+
+  return(
+    <>
+    <button 
+      type="button"
+      onClick={fetchQuote}
+      >Need more wisdom?
+    </button>
+    <p> {quote} </p>
+    </>
   )
-
-
 }
 
 
-
 export default function CounterApp() {
+
+
   return (
     <div>
       <h1>Welcome to my counter app</h1>
       <Counter/>
+      <PhilosophyQuotes/>
     </div>
   );
 }
