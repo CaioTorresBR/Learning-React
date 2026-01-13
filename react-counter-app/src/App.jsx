@@ -4,6 +4,10 @@ import './index.css';
 import "./App.css";
 import Axios from "axios";
 
+let currentQuote = 0 ;
+const quote_style = {
+  color: "yellow"
+}
 
 function Counter() {
   /* useState hook to increment and decrement the number */
@@ -47,16 +51,11 @@ function Counter() {
   );
 }
 
-/* Creating a random number for the data retrieval */
-const min = 1;
-const max = 100;
-const rand = min + Math.random() * (max - min);
-let currentQuote = 0 ;
 
 
+/* Function that fetches quotes from philosophers API and displays it after pressing a button*/
 function PhilosophyQuotes() {
   const [quote, setQuote] = useState("");
-  const [philospher, setPhilosopher] = useState("");
   const [year, setYear] = useState("");
 
   const fetchQuote = () => {
@@ -64,24 +63,15 @@ function PhilosophyQuotes() {
     /*fetches quotes from philospher api */
     Axios.get("https://philosophersapi.com/api/quotes").then((res) => {
       console.log(res.data[currentQuote].quote);
-      console.log(res.data[currentQuote].philosopher.name);
       console.log(res.data[currentQuote].year);
 
-
       setQuote(res.data[currentQuote].quote);
-      setPhilosopher(res.data[currentQuote].philospher);
       setYear(res.data[currentQuote].year);
 
     });
 
     currentQuote += 1;
-
   }
-
-  /* using useEffect so the function is not called for every rendering */
-  useEffect(() => {  
-    fetchQuote();
-  }, []);
 
   return(
     <>
@@ -90,12 +80,12 @@ function PhilosophyQuotes() {
       onClick={() => fetchQuote()}
       >Click here if you need wisdom
     </button>
-    <p> {quote} </p>
+     {/*Will display the quote and the year*/}
+    <p style={quote_style}> {quote} </p>
+    <p style={quote_style}> {year} </p>
     </>
   )
 }
-
-
 
 export default function App() {
   return (
