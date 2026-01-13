@@ -51,23 +51,19 @@ function Counter() {
   );
 }
 
-
-
 /* Function that fetches quotes from philosophers API and displays it after pressing a button*/
 function PhilosophyQuotes() {
   const [quote, setQuote] = useState("");
   const [year, setYear] = useState("");
 
+  /*fetches quotes from philospher api */
   const fetchQuote = () => {
-
-    /*fetches quotes from philospher api */
     Axios.get("https://philosophersapi.com/api/quotes").then((res) => {
       console.log(res.data[currentQuote].quote);
       console.log(res.data[currentQuote].year);
 
       setQuote(res.data[currentQuote].quote);
       setYear(res.data[currentQuote].year);
-
     });
 
     currentQuote += 1;
@@ -84,6 +80,38 @@ function PhilosophyQuotes() {
     <p style={quote_style}> {quote} </p>
     <p style={quote_style}> {year} </p>
     </>
+
+  )
+}
+
+
+/*Function that fetches data obtained by api created with express js */
+function PoutineEquation() {
+  
+  const [poutine, setPoutine] = useState({});
+
+  const fetchPoutine = () => {
+    Axios.get("http://localhost:3000/poutine").then((res) => {
+      console.log(res.data);
+
+      // creates poutine object
+      setPoutine({
+        potatoes : res.data.potatoes,
+        gravy: res.data.gravy,
+        happiness: res.data.happiness
+      })
+    });
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => fetchPoutine()}
+        >Click here for Poutine Math
+      </button>
+      <p>{poutine.potatoes} + {poutine.gravy} = {poutine.happiness}</p>
+    </>
   )
 }
 
@@ -93,6 +121,7 @@ export default function App() {
       <h1>Welcome to my counter app</h1>
       <Counter/>
       <PhilosophyQuotes/>
+      <PoutineEquation/>
     </div>
   );
 }
